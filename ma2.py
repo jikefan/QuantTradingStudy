@@ -16,6 +16,7 @@ strategy['signal'] = np.where(strategy['avg_5'] > strategy['avg_10'], 1, 0)
 
 strategy['order'] = strategy['signal'].diff()
 
+# 画图
 plt.figure(figsize=(10, 5))
 
 plt.plot(df['close'], lw=2, label='price')
@@ -30,9 +31,41 @@ plt.scatter(strategy.loc[strategy.order == 1].index,
 
 plt.scatter(strategy.loc[strategy.order == -1].index,
             df['close'][strategy.order == -1],
-            marker = 'v', s=80, color='r', label='Sell')
+            marker = 'v', s=80, color='g', label='Sell')
 
 plt.legend()
 
 plt.grid()
+plt.show()
+
+# 回测
+initial_cash = 20000
+
+positions = pd.DataFrame(index = strategy.index).fillna(0)
+
+positions['stock'] = strategy['signal'] * 100
+
+portfolio = pd.DataFrame()
+portfolio['stock value'] = positions.multiply(df['close'], axis=0)
+
+order = positions.diff()
+
+portfolio['cash'] = initial_cash - order.multiply(df['close'],
+                                                 axis=0).cumsum()
+
+portfolio['total'] = portfolio['cash'] + portfolio['stock value']
+#检查一下后10行
+print(portfolio.tail(10))
+
+#创建10*5的画布
+plt.figure(figsize=(10,5))
+#绘制总资产曲线
+plt.plot(portfolio['total'], lw=2, label='total')
+#绘制持仓股票市值曲线
+plt.plot(portfolio['stock value'],lw=2,ls='--', label='stock value')
+#添加图注
+plt.legend()
+#添加网格
+plt.grid()
+#展示图像
 plt.show()
