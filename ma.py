@@ -3,7 +3,7 @@ import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
 
-auth('13156553521','Jukuan.179150')
+auth('账号','密码')
 
 period = 10
 
