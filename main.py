@@ -1,6 +1,6 @@
 from jqdatasdk import *
 
-auth('13156553521','Jukuan.179150')
+auth('账号','密码')
 
 ## 1
 # df = get_price('000001.XSHE', start_date='2023-03-28', end_date='2024-04-03', frequency='daily', fields=['open', 'close', 'high', 'low', 'volume', 'money', 'factor'])
